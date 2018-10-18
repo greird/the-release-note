@@ -1,4 +1,4 @@
-# deezer-digest
+# The Release Note
 Every week, get a digest of major updates about your favorite artists and you activity on Deezer.
 
 Create api.env file with the following information.
