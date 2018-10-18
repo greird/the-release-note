@@ -1,0 +1,7 @@
+certifi==2018.8.24
+chardet==3.0.4
+idna==2.7
+python-http-client==3.1.0
+requests==2.19.1
+sendgrid==5.6.0
+urllib3==1.23
