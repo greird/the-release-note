@@ -15,7 +15,6 @@ DEBUG = {
 	'active': False,
 	'user': [{
 		'deezer_user_id': 0,
-		'username': '',
 		'email': '',
 	}]
 }
@@ -29,8 +28,7 @@ for opt, arg in opts:
 	if opt in ("-d", "--debug"):
 		print("Configuring debug mode...") 
 		DEBUG['user'][0]['deezer_user_id'] = int(input("Get new releases for user ID: "))
-		DEBUG['user'][0]['username'] = input("Username: ") 
 		DEBUG['user'][0]['email'] = input("Send the newsletter to: ")
 		DEBUG['active'] = True
 		print("Now running in debug mode...") 
-		print("Sending new releases from " + DEBUG['user'][0]['username'] + " (" + str(DEBUG['user'][0]['deezer_user_id']) + ") to " + DEBUG['user'][0]['email'] + "...") 
+		print("Sending new releases from user id " + str(DEBUG['user'][0]['deezer_user_id']) + " to " + DEBUG['user'][0]['email'] + "...") 

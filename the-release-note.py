@@ -23,7 +23,7 @@ logger.info(str(len(users)) + ' users found.')
 for user in users:
 
 	logger.info("Get new releases for user id " + str(user['deezer_user_id']) + "...")
-	
+
 	new_releases = dzr.getNewReleases(user['deezer_user_id'], CONFIG['released_since'])
 	nb_releases = len(new_releases)
 	
@@ -33,7 +33,7 @@ for user in users:
 	if nb_releases < 1:
 		continue
 
-	subject = "Hey " + user['username'] + ", " + new_releases[0]['artist'] + " released a new album ! 💿💿💿"
+	subject = "♩ Have you listened to " + new_releases[0]['artist'] + "'s new album ?"
 	contenthtml = get_template(new_releases)
 	 
 	send = sendMail(CONFIG['from_mail'], CONFIG['from_name'], user['email'], subject, contenthtml)
