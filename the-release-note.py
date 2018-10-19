@@ -4,12 +4,20 @@ from modules import *
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-# create a file handler
+# create a file handler for INFO
 handler = logging.FileHandler(CONFIG['log_path'] + 'info_the_release_note.log')
 handler.setLevel(logging.INFO)
 handler.setFormatter(formatter)
+# create a file handler for DEBUG
+debug_handler = logging.FileHandler(CONFIG['log_path'] + 'debug_the_release_note.log')
+debug_handler.setLevel(logging.DEBUG)
+debug_handler.setFormatter(formatter)
 # add the handlers to the logger
 logger.addHandler(handler)
+
+if DEBUG['active'] == True:
+	logger.setLevel(logging.DEBUG)
+	logger.addHandler(debug_handler)
 
 dzr = Deezer(
 	access_token=os.environ.get('ACCESS_TOKEN'),
