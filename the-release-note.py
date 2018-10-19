@@ -15,7 +15,7 @@ debug_handler.setFormatter(formatter)
 # add the handlers to the logger
 logger.addHandler(handler)
 
-if DEBUG['active'] == True:
+if DEBUG == True:
 	logger.setLevel(logging.DEBUG)
 	logger.addHandler(debug_handler)
 
@@ -25,7 +25,7 @@ dzr = Deezer(
 	app_secret=os.environ.get('APP_SECRET')
 	)
 
-users = getContacts(CONFIG['contact_list_id']) if DEBUG['active'] == False else DEBUG['user']
+users = getContacts(CONFIG['contact_list_id']) if TEST_USER == None else TEST_USER
 logger.info(str(len(users)) + ' users found.')
 
 for user in users:

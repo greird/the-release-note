@@ -130,7 +130,7 @@ class Deezer(object):
 		
 		def memoized_func(*args):
 			if args in cache:
-				if (time.time() - cache[args]['insert_date']) < CONFIG['CACHE_DURATION']:
+				if (time.time() - cache[args]['insert_date']) < self.cache_duration:
 					return cache[args]['result']
 
 			result = func(*args)
