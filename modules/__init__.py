@@ -11,5 +11,5 @@ CONFIG = {
 	# New releases options
 	'released_since' 	: 1, # in days
 	# paths
-	'log_path' 			: 'logs/',
+	'log_path' 			: './logs/',
 	}
