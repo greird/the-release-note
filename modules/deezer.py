@@ -107,7 +107,7 @@ class Deezer(object):
 			stopwords = re.search(r'(live)|(remaster)|(remix)', album['title'], re.IGNORECASE)
 			album['ignored'] = True	if stopwords else False
 			# Remove the album from the list if it has corrupted data or stopwords
-			if album['tracklist'] != '' and album['ignored'] == False and album['record_type'] == 'album':
+			if album['tracklist'] != '' and album['ignored'] == False and album['record_type'] in ['album', 'single']:
 				new_releases_clean.append(album)
 
 		return new_releases_clean 
