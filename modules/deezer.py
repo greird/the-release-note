@@ -105,8 +105,10 @@ class Deezer(object):
 		for album in new_releases_raw:
 			# Add "ignored=True" to album if contains following stopwords
 			stopwords = re.search(r'(live)|(remaster)|(remix)', album['title'], re.IGNORECASE)
+			banned_artists = re.search(r'(Wolfgang Amadeus Mozart)|(Johann Sebastian Bach)', album['artist'], re.IGNORECASE)
 			album['ignored'] = True	if stopwords else False
-			# Remove the album from the list if it has corrupted data or stopwords
+			album['ignored'] = True	if banned_artists else False
+			# Remove the album from the list if it has corrupted data, stopwords or banned artists
 			if album['tracklist'] != '' and album['ignored'] == False and album['record_type'] in ['album', 'single']:
 				new_releases_clean.append(album)
 
