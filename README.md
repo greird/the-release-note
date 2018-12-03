@@ -1,5 +1,5 @@
 # The Release Note
-Every week, get a digest of major updates about your favorite artists and you activity on Deezer.
+Get a digest of major updates about your favorite artists every day, week or month in your inbox.
 
 ### Setup
 
@@ -20,13 +20,27 @@ Edit CONFIG in `modules/__init__.py`
 
 ### Usage
 
+The Release Note can be used to send newsletters to all recipient from a Sendgrid contact list OR directly to one recipient defined through the terminal.
+
+#### Sending directly to one user
+
+Run `python3 the-release-note.py -u 5 -m mail@mail.com -r 7`. This will send all albums from user 5's favourite artists and released in the past 7 days to mail@mail.com.
+
+#### Sending to a contact list
+
+First you will need to create a Contact List in your Sendgrid acccount. This contact list must come with 2 custom fileds:
+`deezer_user_id` : It must be an integer and match a Deezer user's ID.
+`frequency` : It must be set to `daily` or `weekly`. This is the frequency at which the email will be sent.
+
+Now change the value of `contact_list_id` in `modules/__init__.py` to match your own contact list.
+
 Once properly configured, run `python3 the-release-note.py` to send new releases for all recipients in the SendGrid contact list.
 
-Run with `-d` or `--debug` to record debug log (containing dumps of api responses).
+#### Debug mode
 
-Run `python3 the-release-note.py --user 5 --mailto mail@mail.com` to send new releases from user ID 5 to mail@mail.com.
+Run with `-d` or `--debug` to record debug log.
 
-#### Send the newsletter regulary
+#### Sending the newsletter on a regular basis
 
 Set up a cron to run the script regularly. 
 
