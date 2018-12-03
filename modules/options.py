@@ -8,10 +8,11 @@ def usage():
 	print("-u <user_id> or --user <user_id> to get new releases from 1 given user")
 	print("-m <email> or --mailto <email> to send only one newsletter to the given email address.")
 	print("-u and -m should be used together to send a one shot newsletter to a given user.")
+	print("-r <number of days> or --releasedsince <number of days> to send releases from the n previous days (default is 7).")
 	sys.exit(2)
 
 try:
-	opts, args = getopt.getopt(sys.argv[1:], 'hdu:m:', ['help', 'debug', 'user=', 'mail='])
+	opts, args = getopt.getopt(sys.argv[1:], 'hdu:m:r:', ['help', 'debug', 'user=', 'mail=', 'releasedsince='])
 except getopt.GetoptError as e:
 	print(e)
 	usage()
@@ -29,6 +30,12 @@ for opt, arg in opts:
 			usage()
 	if opt in ("-m", "--mail"):
 		email = arg
+	if opt in ("-r", "--releasedsince"):
+		try:
+			released_since = int(arg)
+		except ValueError as e:
+			print(e)
+			usage()
 
 try:
 	TEST_USER = [{

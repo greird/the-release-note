@@ -1,4 +1,4 @@
-import os, json, logging
+import os, json, logging, datetime
 from modules import *
 
 logger = logging.getLogger(__name__)
@@ -25,6 +25,8 @@ dzr = Deezer(
 	app_secret=os.environ.get('APP_SECRET')
 	)
 
+weekday = datetime.datetime.today().weekday()
+
 users = getContacts(CONFIG['contact_list_id']) if TEST_USER == None else TEST_USER
 logger.info(str(len(users)) + ' users found.')
 
@@ -32,10 +34,24 @@ for user in users:
 
 	logger.info("Get new releases for user id " + str(user['deezer_user_id']) + "...")
 
-	new_releases = dzr.getNewReleases(user['deezer_user_id'], CONFIG['released_since'])
+	# If released_since has not been defined through terminal, check if already defined in User (sendgrid value)
+	if 'released_since' not in locals():
+		try:
+			if weekday == 4 and user['frequency'] == 'weekly': # For weekly, send new releases on friday only
+				continue
+
+			released_since = {
+				'daily': 1,
+				'weekly': 7
+			}.get(user['frequency'], 7)
+		except KeyError as error:
+			logger.debug("Frequency setting not found. Fallback to default value.")
+			released_since = 7
+
+	new_releases = dzr.getNewReleases(user['deezer_user_id'], released_since)
 	nb_releases = len(new_releases)
 	
-	logger.info("User id " + str(user['deezer_user_id']) + " has " + str(nb_releases) + " new releases available.")
+	logger.info("User id " + str(user['deezer_user_id']) + " has " + str(nb_releases) + " albums released in the past " + str(released_since) + " days.")
 	logger.debug(json.dumps(new_releases, sort_keys=True, indent=4, separators=(',', ': ')))
 
 	if nb_releases < 1:
