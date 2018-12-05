@@ -3,10 +3,8 @@ from datetime import datetime
 
 class Deezer(object):
 	"""This is a simple wrapper for the Deezer API"""
-	def __init__(self, access_token, app_id, app_secret, cache_duration=7200, quota_limit=50, quota_delay=5, tries=2):
+	def __init__(self, access_token, cache_duration=7200, quota_limit=50, quota_delay=5, tries=2):
 		self.access_token = access_token
-		self.app_id = app_id
-		self.app_secret = app_secret
 		self.cache_duration = cache_duration
 		self.quota_limit = quota_limit
 		self.quota_delay = quota_delay
