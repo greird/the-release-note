@@ -36,7 +36,7 @@ This will send all albums from user ID 5's favourite artists and released in the
 
 First you will need to create a Contact List in your Sendgrid acccount. This contact list must come with 2 custom fields:
 `deezer_user_id` : It must be an integer and match a Deezer user's ID.
-`frequency` : It must be set to `daily` or `weekly`. This is the frequency at which the email will be sent. If not found, it will default to 7.
+`frequency` : It must be set to `daily` or `weekly`. This is the frequency at which the email will be sent. If not found, it will default to 1.
 
 Now change the value of `contact_list_id` in `modules/__init__.py` to match your own contact list.
 

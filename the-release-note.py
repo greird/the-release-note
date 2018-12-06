@@ -27,22 +27,24 @@ users = getContacts(CONFIG['contact_list_id']) if TEST_USER == None else TEST_US
 logger.info(str(len(users)) + ' users found.')
 
 for user in users:
-
 	logger.info("Get new releases for user id " + str(user['deezer_user_id']) + "...")
 
-	# If released_since has not been defined through terminal, check if already defined in User (sendgrid value)
-	if 'released_since' not in locals():
+	if 'opt_released_since' not in locals():
 		try:
-			if weekday == 4 and user['frequency'] == 'weekly': # For weekly, send new releases on friday only
+			# For weekly users, send new releases on friday only
+			if weekday != 4 and user['frequency'] == 'weekly':
+				logger.debug("Skipping this user as he's a weekly user and will only receive new releases on Friday.")
 				continue
 
 			released_since = {
 				'daily': 1,
 				'weekly': 7
-			}.get(user['frequency'], 7)
+			}.get(user['frequency'], 1)
 		except KeyError as error:
 			logger.debug("Frequency setting not found. Fallback to default value.")
-			released_since = 7
+			released_since = 1
+	else:
+		released_since = opt_released_since 
 
 	new_releases = dzr.getNewReleases(user['deezer_user_id'], released_since)
 	nb_releases = len(new_releases)

@@ -32,7 +32,7 @@ for opt, arg in opts:
 		email = arg
 	if opt in ("-r", "--releasedsince"):
 		try:
-			released_since = int(arg)
+			opt_released_since = int(arg)
 		except ValueError as e:
 			print(e)
 			usage()
