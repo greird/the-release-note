@@ -35,11 +35,11 @@ for user in users:
 			if weekday != 4 and user['frequency'] == 'weekly':
 				logger.debug("Skipping this user as he's a weekly user and will only receive new releases on Friday.")
 				continue
-
-			released_since = {
-				'daily': 1,
-				'weekly': 7
-			}.get(user['frequency'], 1)
+			else:
+				released_since = {
+					'daily': 1,
+					'weekly': 7
+				}.get(user['frequency'], 1)
 		except KeyError as error:
 			logger.debug("Frequency setting not found. Fallback to default value.")
 			released_since = 1
