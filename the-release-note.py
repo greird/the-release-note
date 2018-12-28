@@ -19,7 +19,7 @@ if DEBUG == True:
 	logger.setLevel(logging.DEBUG)
 	logger.addHandler(debug_handler)
 
-dzr = Deezer(access_token=os.environ.get('DEEZER_ACCESS_TOKEN'))
+dzr = Deezer()
 
 weekday = datetime.datetime.today().weekday()
 

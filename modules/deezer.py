@@ -3,7 +3,7 @@ from datetime import datetime
 
 class Deezer(object):
 	"""This is a simple wrapper for the Deezer API"""
-	def __init__(self, access_token, cache_duration=7200, quota_limit=50, quota_delay=5, tries=2):
+	def __init__(self, access_token=None, cache_duration=7200, quota_limit=50, quota_delay=5, tries=2):
 		self.access_token = access_token
 		self.cache_duration = cache_duration
 		self.quota_limit = quota_limit
@@ -26,7 +26,11 @@ class Deezer(object):
 			Query a Deezer API endpoint with the proper parameter and output a clean response object
 		"""
 		get_cached = self.memoize(requests.get)
-		query = "https://api.deezer.com" + str(endpoint) + "?access_token=" + self.access_token
+
+		query = "https://api.deezer.com" + str(endpoint)
+		if self.access_token != None:
+			query = query + "?access_token=" + self.access_token
+
 		param = {
 			'limit': 2000,
 			'nb': 10000,
