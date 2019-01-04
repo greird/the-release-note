@@ -11,3 +11,6 @@ CONFIG = {
 	# paths
 	'log_path' 			: './logs/user/'
 	}
+
+if contact_list_id:
+	CONFIG['contact_list_id'] = contact_list_id

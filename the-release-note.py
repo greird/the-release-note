@@ -23,7 +23,12 @@ dzr = Deezer()
 
 weekday = datetime.datetime.today().weekday()
 
-users = getContacts(CONFIG['contact_list_id']) if TEST_USER == None else TEST_USER
+try:
+	users = getContacts(CONFIG['contact_list_id']) if TEST_USER == None else TEST_USER
+except:
+	logger.info("Contact List not found.")
+	sys.exit(2)
+
 logger.info(str(len(users)) + ' users found.')
 
 for user in users:

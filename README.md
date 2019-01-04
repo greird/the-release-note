@@ -42,6 +42,9 @@ Now change the value of `contact_list_id` in `modules/__init__.py` to match your
 
 Once properly configured, run `python3 the-release-note.py` to send new releases for all recipients in the SendGrid contact list.
 
+Alternatively, you can also specify the contact list ID through the command line:
+`python3 the-release-note.py --contactlist 123456`
+
 ### Debug mode
 
 Run with `-d` or `--debug` to record debug log.
