@@ -1,8 +1,6 @@
 # The Release Note
 Every day/week at 9am, get a digest of all the new releases from your favorite artists (if any).
 
-To try it out, sign up here: https://greird.github.io/the-release-note/
-
 ## Requierements
 
 - Python 3
