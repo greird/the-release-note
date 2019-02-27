@@ -1,6 +1,8 @@
 # The Release Note
 Every day/week at 9am, get a digest of all the new releases from your favorite artists (if any).
 
+![Email exemple](http://greird.webfactional.com/img/thereleasenote2.png "")
+
 ## Requierements
 
 - Python 3
