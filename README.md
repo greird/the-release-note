@@ -3,7 +3,7 @@ Every day/week at 9am, get a digest of all the new releases from your favorite a
 
 <img src="http://greird.webfactional.com/img/thereleasenote2.png" width="500">
 
-## Requierements
+## Requirements
 
 - Python 3
 - A Deezer API Access Token (https://developers.deezer.com/api/explorer)
@@ -13,7 +13,7 @@ Every day/week at 9am, get a digest of all the new releases from your favorite a
 
 Clone, fork or download this repository.
 
-Install all dependencies with `pip3 install -r requierements.txt`.
+Install all dependencies with `pip3 install -r requirements.txt`.
 
 Create api.env file with the following information.
 ```env
