@@ -1,7 +1,9 @@
 # The Release Note
-Get a digest of major updates about your favorite artists every day, week or month in your inbox.
+Every day/week at 9am, get a digest of all the new releases from your favorite artists (if any).
 
-## Requierements
+<img src="http://greird.webfactional.com/img/thereleasenote2.png" width="500">
+
+## Requirements
 
 - Python 3
 - A Deezer API Access Token (https://developers.deezer.com/api/explorer)
@@ -11,7 +13,7 @@ Get a digest of major updates about your favorite artists every day, week or mon
 
 Clone, fork or download this repository.
 
-Install all dependencies with `pip3 install -r requierements.txt`.
+Install all dependencies with `pip3 install -r requirements.txt`.
 
 Create api.env file with the following information.
 ```env
