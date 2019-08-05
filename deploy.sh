@@ -3,8 +3,7 @@
 # abort on errors
 set -e
 
-ssh greird@greird.webfactional.com
-cd webapps/the_release_note
+cd ~/webapps/the_release_note
 
 # Fetch all new files and reset local repo to what have been fetched
 git fetch --all
