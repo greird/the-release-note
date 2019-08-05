@@ -33,7 +33,7 @@ for opt, arg in opts:
 			usage()
 	if opt in ("-c", "--contactlist"):
 		try:
-			contact_list_id = int(arg)
+			contact_list_id = str(arg)
 		except ValueError as e:
 			print(e)
 			usage()

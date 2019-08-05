@@ -24,9 +24,12 @@ dzr = Deezer()
 weekday = datetime.datetime.today().weekday()
 
 try:
+	print(CONFIG['contact_list_id'])
 	users = getContacts(CONFIG['contact_list_id']) if TEST_USER == None else TEST_USER
-except:
-	logger.info("Contact List not found.")
+except Exception as e:
+	logger.info("An error occured while trying to retrieve the contact list.")
+	print(e)
+	logger.debug(e)
 	sys.exit(2)
 
 logger.info(str(len(users)) + ' users found.')
