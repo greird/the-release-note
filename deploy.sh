@@ -12,5 +12,3 @@ git reset --hard origin/master
 # update python modules if needed
 . venv/bin/activate
 pip install -r requirements.txt 
-
-exit
