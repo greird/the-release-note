@@ -34,10 +34,10 @@ def getContacts(list_id:str):
 # Send a mail
 def sendMail(mfrom:str, mfromname:str, mto:str, msubject:str, mcontent:str):
 	mail = Mail(
-		Email(mfrom, mfromname), 
-		msubject, 
-		Email(mto), 
-		Content("text/html", mcontent)
-		)
-	r = sg.client.mail.send.post(request_body=mail.get())
+		from_email=(mfrom, mfromname),
+		to_emails=mto,
+		subject=msubject,
+		html_content=mcontent)
+	r = sg.send(mail)
+
 	return r

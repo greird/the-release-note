@@ -64,6 +64,10 @@ for user in users:
 	subject = "♩ Have you listened to " + new_releases[0]['artist'] + "'s new album ?"
 	contenthtml = get_template(new_releases)
 	 
-	send = sendMail(CONFIG['from_mail'], CONFIG['from_name'], user['email'], subject, contenthtml)
-	logger.info("Sending email - Status: " + str(send.status_code))
-	logger.debug(send.headers)
+	try:
+		send = sendMail(CONFIG['from_mail'], CONFIG['from_name'], user['email'], subject, contenthtml)
+		logger.info("Sending email - Status: " + str(send.status_code))
+		logger.debug(send.headers)
+	except Exception as e:
+		logger.info("An error occured while trying to send the mail.")
+		logger.debug(e)
