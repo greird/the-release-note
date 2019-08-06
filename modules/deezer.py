@@ -104,11 +104,14 @@ class Deezer(object):
 		# Post-processing to remove unwanted releases
 		new_releases_clean = []
 
+		stopwords = [line.rstrip('\n') for line in open('models/stopwords')]
+		banned_artists = [line.rstrip('\n') for line in open('models/banned_artists')]
+
 		for album in new_releases_raw:
-			stopwords = re.search(r'(live)|(remaster)|(remix)', album['title'], re.IGNORECASE)
-			banned_artists = re.search(r'(Wolfgang Amadeus Mozart)|(Johann Sebastian Bach)|(The Beatles)', album['artist'], re.IGNORECASE)
-			# Remove the album from the list if it has corrupted data, stopwords or banned artists
-			if album['tracklist'] != '' and not stopwords and not banned_artists and album['record_type'] in ['album', 'single']:
+			if (album['tracklist'] != '' and 
+					album['title'] not in stopwords and 
+					album['artist'] not in banned_artists and 
+					album['record_type'] in ['album', 'single']):
 				new_releases_clean.append(album)
 
 		return new_releases_clean 

@@ -80,6 +80,24 @@ Note that for users with "weekly" preferences, it will only send the email on Fr
 
 Run with `-d` or `--debug` to record debug log.
 
+## Filtered new released
+
+Only Albums and Single with a valid tracklist will appear in the digest. In addition, some artists or albums are banned.
+
+### Banned artists
+
+Some artists are banned from appearing in the digest. For instance, The Beatles are banned because they are unlikely to release any real new material. Unfortunately, new content with wrong release date is frequently delivered to Deezer, hence the necessity of this filter.
+
+The list of banned artist is in `models/banned_artists`. 
+To ban an artist, simply add one to the list `echo The Beatles >> models/banned_artists`
+
+### Stopwords
+
+If a stopword appear in a new release title, the content will be filtered. This is done to prevent shitty content (e.g. Karaoke or cover version) to appear in the digest. 
+
+The list of stopwords is in `models/stopwords`. 
+To add a stopword, simply add one to the list `echo MY_STOPWORD >> models/stopwords`
+
 ## Troubleshooting
 
 ### SSL issue with sendgrid
