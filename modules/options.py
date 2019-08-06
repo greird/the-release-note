@@ -10,12 +10,12 @@ def usage():
 	print("-u <user_id> or --user <user_id> to get new releases from 1 given user")
 	print("-m <email> or --mailto <email> to send only one newsletter to the given email address.")
 	print("-u and -m should be used together to send a one shot newsletter to a given user.")
-	print("-c <sendgrid contact list> or --contactlist <sendgrid contact list> to get user id and mail data from a Sendgrid contact list.")
-	print("-r <number of days> or --releasedsince <number of days> to send releases from the n previous days (default is 7).")
+	print("-c <sendgrid contact list> or --contact-list <sendgrid contact list> to get user id and mail data from a Sendgrid contact list.")
+	print("-r <number of days> or --released-since <number of days> to send releases from the n previous days (default is 7).")
 	sys.exit(2)
 
 try:
-	opts, args = getopt.getopt(sys.argv[1:], 'hdu:m:c:r:', ['help', 'debug', 'user=', 'mail=', 'contactlist=', 'releasedsince='])
+	opts, args = getopt.getopt(sys.argv[1:], 'hdu:m:c:r:', ['help', 'debug', 'user=', 'mail=', 'contact-list=', 'released-since='])
 except getopt.GetoptError as e:
 	print(e)
 	usage()
@@ -31,7 +31,7 @@ for opt, arg in opts:
 		except ValueError as e:
 			print(e)
 			usage()
-	if opt in ("-c", "--contactlist"):
+	if opt in ("-c", "--contact-list"):
 		try:
 			contact_list_id = str(arg)
 		except ValueError as e:
@@ -39,7 +39,7 @@ for opt, arg in opts:
 			usage()
 	if opt in ("-m", "--mail"):
 		email = arg
-	if opt in ("-r", "--releasedsince"):
+	if opt in ("-r", "--released-since"):
 		try:
 			opt_released_since = int(arg)
 		except ValueError as e:

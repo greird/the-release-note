@@ -27,7 +27,7 @@ def getContacts(list_id:str):
 			except Exception as e:
 				raise e
 
-		users.append(user)
+			users.append(user)
 		
 	return users
 
