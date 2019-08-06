@@ -14,8 +14,10 @@ def getContacts(list_id:str):
 		if list_id in recipient['list_ids']: # keep only contact in the given contact list
 
 			user = {
+					'id:': recipient['id'],
 					'name': recipient['first_name'],
-					'email': recipient['email']
+					'email': recipient['email'],
+					'list_ids': recipient['list_ids']
 				}
 
 			r_recipient = sg.client.marketing.contacts._(recipient['id']).get()
