@@ -29,8 +29,8 @@ Edit CONFIG in `modules/__init__.py`
 The Release Note can be used to send newsletters to all recipient from a Sendgrid contact list OR directly to one recipient defined through the terminal.
 
 ```
-usage: the-release-note.py [-h] [-d] [-u DEEZER_ID EMAIL] [-c CONTACT_LIST_ID]
-                           [-s NUMBER_OF_DAYS]
+usage: the-release-note.py [-h] [-d] [-u DEEZER_ID EMAIL]
+                           [-c SENDGRID_CONTACT_LIST_ID] [-s NUMBER_OF_DAYS]
 
 Sending new releases to a contact list or a given user.
 
@@ -38,9 +38,10 @@ optional arguments:
   -h, --help            show this help message and exit
   -d, --debug           Enable debug mode.
   -u DEEZER_ID EMAIL, --user DEEZER_ID EMAIL
-                        A Deezer user id and an email address.
-  -c CONTACT_LIST_ID, --contact-list CONTACT_LIST_ID
-                        A Sendgrid contact list ID.
+                        Send all new releases from DEEZER_ID to EMAIL.
+  -c SENDGRID_CONTACT_LIST_ID, --contact-list SENDGRID_CONTACT_LIST_ID
+                        Send a personalized new releases digest to all
+                        recipients of a Sendgrid contact list.
   -s NUMBER_OF_DAYS, --since NUMBER_OF_DAYS
                         Keep only the albums released since a given number of
                         days.
