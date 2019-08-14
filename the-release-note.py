@@ -60,9 +60,13 @@ for user in users:
 					'daily': 1,
 					'weekly': 7
 				}.get(user['frequency'], 1)
-		except KeyError as error:
+		except KeyError as e:
 			logger.debug("Frequency setting not found. Fallback to default value.")
 			released_since = 1
+		except Exception as e:
+			logger.debug("An error occured while trying to retrieve the frequency setting:")
+			logger.debug(e)
+			continue
 
 	new_releases = dzr.getNewReleases(user['deezer_user_id'], released_since)
 	nb_releases = len(new_releases)
