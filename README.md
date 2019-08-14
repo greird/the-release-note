@@ -19,7 +19,7 @@ All you need is Python3 and a [Sendgrid API key](https://app.sendgrid.com/settin
 
 The Release Note can be used to send newsletters to all recipient from a Sendgrid contact list OR directly to one recipient defined through the terminal.
 
-```shell
+```bash
 usage: the-release-note.py [-h] [-d] [-u DEEZER_ID EMAIL]
                            [-c SENDGRID_CONTACT_LIST_ID] [-s NUMBER_OF_DAYS]
 
@@ -62,7 +62,7 @@ Alternatively, you can also specify the contact list ID through the command line
 Set up a cron to run the script regularly. 
 
 e.g. To send the newsletter every day at 8am (change path accordingly):
-```
+```bash
 0 8 * * * source <yourpath>/sendgrid.env ; <yourpath>/python3 <yourpath>/the-release-note.py >> <yourpath>/cron.log 2>&1
 ```
 Note that for users with "weekly" preferences, it will only send the email on Friday, containing new releases from the past 7 days.
