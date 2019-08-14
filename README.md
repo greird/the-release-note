@@ -19,7 +19,7 @@ All you need is Python3 and a [Sendgrid API key](https://app.sendgrid.com/settin
 
 The Release Note can be used to send newsletters to all recipient from a Sendgrid contact list OR directly to one recipient defined through the terminal.
 
-```
+```shell
 usage: the-release-note.py [-h] [-d] [-u DEEZER_ID EMAIL]
                            [-c SENDGRID_CONTACT_LIST_ID] [-s NUMBER_OF_DAYS]
 
