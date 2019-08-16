@@ -86,27 +86,27 @@ class Deezer(object):
 		number_of_days = number_of_days
 		userId = userId
 		new_releases_raw = []
-		now = datetime.now()
-		fav_artists = self.get("/user/" + str(userId) + "/artists")
-
-		# For each artist, check new releases
-		for artist in fav_artists:
-			albums = self.get("/artist/" + str(artist['id']) + "/albums")
-
-			if albums != False:
-				for album in albums:
-					delta = abs((now - self.date(album['release_date'])).days)
-
-					if delta < number_of_days:
-						album['artist'] = artist['name'] # adding the missing artist name to the album json
-						new_releases_raw.append(album)
-
-		# Post-processing to remove unwanted releases
 		new_releases_clean = []
-
+		now = datetime.now()
 		stopwords = [line.rstrip('\n').lower() for line in open('models/stopwords')]
 		banned_artists = [line.rstrip('\n').lower() for line in open('models/banned_artists')]
+		
+		# For each artist, check new releases
+		fav_artists = self.get("/user/" + str(userId) + "/artists")
 
+		for artist in fav_artists:
+			if artist['name'].lower() not in banned_artists:
+				albums = self.get("/artist/" + str(artist['id']) + "/albums")
+
+				if albums != False:
+					for album in albums:
+						delta = abs((now - self.date(album['release_date'])).days)
+
+						if delta < number_of_days:
+							album['artist'] = artist['name'] # adding the missing artist name to the album json
+							new_releases_raw.append(album)
+
+		# Post-processing to remove unwanted releases
 		for album in new_releases_raw:
 			filtered = False
 			if (album['tracklist'] != '' and 
@@ -116,7 +116,6 @@ class Deezer(object):
 				for stopword in stopwords:
 					
 					if stopword in album['title'].lower():
-						print(album['title'])
 						filtered = True
 						break
 				
