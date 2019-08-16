@@ -104,15 +104,24 @@ class Deezer(object):
 		# Post-processing to remove unwanted releases
 		new_releases_clean = []
 
-		stopwords = [line.rstrip('\n') for line in open('models/stopwords')]
-		banned_artists = [line.rstrip('\n') for line in open('models/banned_artists')]
+		stopwords = [line.rstrip('\n').lower() for line in open('models/stopwords')]
+		banned_artists = [line.rstrip('\n').lower() for line in open('models/banned_artists')]
 
 		for album in new_releases_raw:
+			filtered = False
 			if (album['tracklist'] != '' and 
-					album['title'] not in stopwords and 
-					album['artist'] not in banned_artists and 
+					album['artist'].lower() not in banned_artists and 
 					album['record_type'] in ['album', 'single']):
-				new_releases_clean.append(album)
+				
+				for stopword in stopwords:
+					
+					if stopword in album['title'].lower():
+						print(album['title'])
+						filtered = True
+						break
+				
+				if not filtered:
+					new_releases_clean.append(album)
 
 		return new_releases_clean 
 
