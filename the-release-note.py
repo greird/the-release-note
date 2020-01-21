@@ -68,7 +68,16 @@ for user in users:
 			logger.debug(e)
 			continue
 
-	new_releases = dzr.getNewReleases(user['deezer_user_id'], released_since)
+	try:
+		new_releases = dzr.getNewReleases(user['deezer_user_id'], released_since)
+	except Exception as e:
+		logger.debug("An error occured while trying to retrieve the new releases.")
+		logger.debug(e)
+		print('Interrupted.')
+	except:
+		logger.debug("An unknown error occured while trying to retrieve the new releases.")
+		continue
+
 	nb_releases = len(new_releases)
 	
 	logger.info("User id " + str(user['deezer_user_id']) + " has " + str(nb_releases) + " albums released in the past " + str(released_since) + " days.")
