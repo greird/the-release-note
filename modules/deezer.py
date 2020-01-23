@@ -1,5 +1,6 @@
 import requests, re, json, time, sys
 from datetime import datetime
+from pathlib import Path
 
 class Deezer(object):
 	"""This is a simple wrapper for the Deezer API"""
@@ -88,8 +89,12 @@ class Deezer(object):
 		new_releases_raw = []
 		new_releases_clean = []
 		now = datetime.now()
-		stopwords = [line.rstrip('\n').lower() for line in open('models/stopwords')]
-		banned_artists = [line.rstrip('\n').lower() for line in open('models/banned_artists')]
+
+		try:
+			stopwords = [line.rstrip('\n').lower() for line in open(Path('models/stopwords'))]
+			banned_artists = [line.rstrip('\n').lower() for line in open(Path('models/banned_artists'))]
+		except Exception as e:
+			raise e
 		
 		# For each artist, check new releases
 		fav_artists = self.get("/user/" + str(userId) + "/artists")

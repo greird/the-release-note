@@ -74,9 +74,6 @@ for user in users:
 		logger.debug("An error occured while trying to retrieve the new releases.")
 		logger.debug(e)
 		print('Interrupted.')
-	except:
-		logger.debug("An unknown error occured while trying to retrieve the new releases.")
-		continue
 
 	nb_releases = len(new_releases)
 	
