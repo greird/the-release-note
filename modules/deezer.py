@@ -90,11 +90,8 @@ class Deezer(object):
 		new_releases_clean = []
 		now = datetime.now()
 
-		try:
-			stopwords = [line.rstrip('\n').lower() for line in open(Path('models/stopwords'))]
-			banned_artists = [line.rstrip('\n').lower() for line in open(Path('models/banned_artists'))]
-		except Exception as e:
-			raise e
+		stopwords = [line.rstrip('\n').lower() for line in open(str(Path('models/stopwords')))]
+		banned_artists = [line.rstrip('\n').lower() for line in open(str(Path('models/banned_artists')))]
 		
 		# For each artist, check new releases
 		fav_artists = self.get("/user/" + str(userId) + "/artists")

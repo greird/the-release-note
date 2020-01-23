@@ -70,10 +70,13 @@ for user in users:
 
 	try:
 		new_releases = dzr.getNewReleases(user['deezer_user_id'], released_since)
-	except Exception as e:
-		logger.debug("An error occured while trying to retrieve the new releases.")
+	except IOError as e:
+		logger.debug("Stopwords and banned artists could not be retrieved.")
 		logger.debug(e)
-		print('Interrupted.')
+		sys.exit(2)
+	except Exception as e:
+		logger.debug(e)
+		sys.exit(2)
 
 	nb_releases = len(new_releases)
 	
