@@ -1,4 +1,4 @@
-import requests, re, json, time, sys
+import requests, re, json, time, os
 from datetime import datetime
 from pathlib import Path
 
@@ -89,9 +89,10 @@ class Deezer(object):
 		new_releases_raw = []
 		new_releases_clean = []
 		now = datetime.now()
+		base_path = os.path.dirname(os.path.abspath(__file__))
 
-		stopwords = [line.rstrip('\n').lower() for line in open(str(Path('models/stopwords')))]
-		banned_artists = [line.rstrip('\n').lower() for line in open(str(Path('models/banned_artists')))]
+		stopwords = [line.rstrip('\n').lower() for line in open(os.path.join(base_path, '../models/stopwords'))]
+		banned_artists = [line.rstrip('\n').lower() for line in open(os.path.join(base_path, '../models/banned_artists'))]
 		
 		# For each artist, check new releases
 		fav_artists = self.get("/user/" + str(userId) + "/artists")
