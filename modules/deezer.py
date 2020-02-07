@@ -86,8 +86,7 @@ class Deezer(object):
 	def getNewReleases(self, userId:int, number_of_days:int=7):
 		number_of_days = number_of_days
 		userId = userId
-		new_releases_raw = []
-		new_releases_clean = []
+		new_releases = []
 		now = datetime.now()
 		base_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -107,25 +106,19 @@ class Deezer(object):
 
 						if delta < number_of_days:
 							album['artist'] = artist['name'] # adding the missing artist name to the album json
-							new_releases_raw.append(album)
+							new_releases.append(album)
+
+		def findStopWords(string):
+			for stopword in stopwords:
+				if stopword in string.lower():
+					return True
 
 		# Post-processing to remove unwanted releases
-		for album in new_releases_raw:
-			filtered = False
-			if (album['tracklist'] != '' and 
-					album['artist'].lower() not in banned_artists and 
-					album['record_type'] in ['album', 'single']):
-				
-				for stopword in stopwords:
-					
-					if stopword in album['title'].lower():
-						filtered = True
-						break
-				
-				if not filtered:
-					new_releases_clean.append(album)
-
-		return new_releases_clean 
+		new_releases = list(filter(lambda album:  album['record_type'] == 'album', new_releases))
+		new_releases = list(filter(lambda album:  album['tracklist'] != '', new_releases))
+		new_releases = list(filter(lambda album:  album['artist'].lower() not in banned_artists, new_releases))
+		new_releases = list(filter(lambda album: not findStopWords(album['title']), new_releases))
+		return new_releases 
 
 	"""
 		HELPERS
