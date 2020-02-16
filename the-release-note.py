@@ -86,17 +86,28 @@ for user in users:
 	if nb_releases < 1:
 		continue
 
-	subject = "♩ Have you listened to " + new_releases[0]['artist'] + "'s new album ?"
+	# Store new releases into database
+	try:
+		db = Database(os.environ.get('DATABASE'))
+		db.storeNewReleases(new_releases, user['deezer_user_id'])
+		del(db)
+	except Exception as e:
+		logger.info("An error occured while trying to store the new releases in the database.")
+		logger.debug(e)	
+
+	# Send new releases by email
+	subject = "♩ Have you listened to " + new_releases[0]['artist']['name'] + "'s new album ?"
 	contenthtml = get_template(new_releases)
 	 
-	try:
-		send = sendMail(CONFIG['from_mail'], CONFIG['from_name'], user['email'], subject, contenthtml)
-		logger.info("Sending email - Status: " + str(send.status_code))
-		logger.debug(send.headers)
-	except Exception as e:
-		logger.info("An error occured while trying to send the mail.")
-		logger.debug(e)
-		sys.exit(2)
+	if not args.do_not_send:
+		try:
+			send = sendMail(CONFIG['from_mail'], CONFIG['from_name'], user['email'], subject, contenthtml)
+			logger.info("Sending email - Status: " + str(send.status_code))
+			logger.debug(send.headers)
+		except Exception as e:
+			logger.info("An error occured while trying to send the mail.")
+			logger.debug(e)
+			sys.exit(2)
 
 print('Done')
-logger.info("Done without errors in %s seconds " % (datetime.datetime.now() - start_time).total_seconds())
+logger.info("Done in %s seconds " % (datetime.datetime.now() - start_time).total_seconds())

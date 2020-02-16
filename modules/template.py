@@ -13,7 +13,7 @@ def get_template(content:list):
 		html = html.replace('{{ALBUM_IMG}}', album['cover_medium'])
 		html = html.replace('{{ALBUM_TITLE}}', album['title'])
 		html = html.replace('{{ALBUM_LINK}}', album['link'])
-		html = html.replace('{{ALBUM_ARTIST}}', album['artist'])
+		html = html.replace('{{ALBUM_ARTIST}}', album['artist']['name'])
 		releases_html += html
 
 	template_html = template_html.replace('{{NB_RELEASES}}', nb_releases)

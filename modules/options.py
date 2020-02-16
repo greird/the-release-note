@@ -26,4 +26,10 @@ parser.add_argument('-s', '--since',
 	dest='released_since',
 	help='Keep only the albums released since a given number of days.')
 
+parser.add_argument('-n', '--no-mail',
+	const=True,
+	action='store_const',
+	dest='do_not_send',
+	help='Do not send any email.')
+
 args = parser.parse_args()
