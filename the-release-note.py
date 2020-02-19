@@ -88,7 +88,7 @@ for user in users:
 
 	# Store new releases into database
 	try:
-		db = Database(os.environ.get('DATABASE'))
+		db = Database()
 		db.storeNewReleases(new_releases, user['deezer_user_id'])
 		del(db)
 	except Exception as e:
