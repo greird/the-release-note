@@ -1,5 +1,7 @@
 import os
+from datetime import datetime
 from sqlalchemy import create_engine, text, MetaData, Table, Column
+from sqlalchemy.exc import IntegrityError
 
 class Database(object):
 	"""docstring for Database"""
@@ -8,69 +10,94 @@ class Database(object):
 		self.tables = self.engine.table_names()
 		self.db = self.engine.connect()
 		self.meta = MetaData(self.engine)
-
-	def __del__(self):
-		self.db.close()
-
-	def getUser(self, user_id):
-		tbl_user = Table('dim_user', self.meta,  
+		self.tbl_user = Table('dim_user', self.meta,  
 			Column('user_id'), 
 			Column('first_name'), 
 			Column('last_name'), 
 			Column('email'), 
 			Column('frequency'), 
 			Column('last_check'))
-		r = self.db.execute(tbl_user.select())
-		print(r.fetchone())
-		return r
+		self.tbl_artist = Table('dim_artist', self.meta,  
+			Column('artist_id'), 
+			Column('name'), 
+			Column('nb_fans'), 
+			Column('created_at'), 
+			Column('updated_at'))
+		self.tbl_album = Table('dim_album', self.meta,  
+			Column('album_id'), 
+			Column('title'), 
+			Column('artist_id'), 
+			Column('release_date'), 
+			Column('nb_fans'),
+			Column('genre_id'),
+			Column('type'),
+			Column('inserted_at'),
+			Column('updated_at'))
+		self.tbl_releases = Table('fact_releases', self.meta,  
+			Column('id'), 
+			Column('user_id'), 
+			Column('artist_id'), 
+			Column('album_id'), 
+			Column('created_at'))
+
+	def __del__(self):
+		self.db.close()
+
+	def getUser(self, user_id):
+		return self.db.execute(self.tbl_user.select().where(Column('user_id') == user_id)).fetchone()
 
 	def createUser(self, user_id, first_name=None, last_name=None, email=None, frequency=None):
-		sql = text('''INSERT INTO dim_user (user_id, first_name, last_name, email, frequency) VALUES (:user_id, :first_name, :last_name, :email, :frequency);''')
-		self.db.execute(sql,
-			user_id=user_id,
-			first_name=first_name,
-			last_name=last_name,
-			email=email,
-			frequency=frequency)
+		try:
+			self.db.execute(self.tbl_user.insert().values(
+				user_id=user_id, 
+				first_name=first_name, 
+				last_name=last_name, 
+				email=email, 
+				frequency=frequency))
+			return True
+		except Exception as e:
+			return False
 
 	def updateUserLastCheck(self, user_id):
-		user_exists = self.db.execute("SELECT exists(SELECT user_id FROM dim_user WHERE user_id=" + str(user_id) + ");").fetchone()[0]
-		if user_exists:
-			self.db.execute("UPDATE dim_user SET last_check=NOW() WHERE user_id=" + str(user_id) + ";")
-		else:
-			self.createUser(user_id=user_id)
+		user_exists = self.createUser(user_id)
+		if not user_exists:
+			self.db.execute(self.tbl_user.update()
+				.where(Column('user_id') == user_id)
+				.values(last_check=datetime.now()))
 
 	def getArtist(self, artist_id):
-		pass
+		return self.db.execute(self.tbl_artist.select().where(Column('artist_id') == artist_id)).fetchone()
 
 	def createArtist(self, artist):
-		artist_exists = self.db.execute("SELECT exists(SELECT artist_id FROM dim_artist WHERE artist_id=" + str(artist['id']) + ");").fetchone()[0]
-		if artist_exists:
-			self.db.execute("UPDATE dim_artist SET nb_fans=" + str(artist['nb_fan']) + ", updated_at=NOW() WHERE artist_id=" + str(artist['id']) + ";")
-		else:
-			sql = text('INSERT INTO dim_artist (artist_id, name, nb_fans) VALUES (:artist_id, :artist_name, :nb_fans);')
-			self.db.execute(sql,
-				artist_id=artist['id'],
-				artist_name=artist['name'],
-				nb_fans=artist['nb_fan'])
+		try:
+			self.db.execute(self.tbl_artist.insert()
+				.values(artist_id=artist['id'], name=artist['name'], nb_fans=artist['nb_fan']))
+		except IntegrityError as e:
+			self.db.execute(self.tbl_artist.update()
+				.where(Column('artist_id') == artist['id'])
+				.values(nb_fans=artist['nb_fan'])) 
+		except Exception as e:
+			return False
 
 	def getAlbum(self, album_id):
-		pass
+		return self.db.execute(self.tbl_album.select().where(Column('album_id') == album_id)).fetchone()
 
 	def createAlbum(self, album):
-		album_exists = self.db.execute("SELECT exists(SELECT album_id FROM dim_album WHERE album_id=" + str(album['id']) + ");").fetchone()[0]
-		if album_exists:
-			self.db.execute("UPDATE dim_album SET nb_fans=" + str(album['fans']) + ", updated_at=NOW() WHERE album_id=" + str(album['id']) + ";")
-		else:
-			sql = text('INSERT INTO dim_album (album_id, artist_id, title, release_date, nb_fans, genre_id, type) VALUES (:album_id, :artist_id, :title, :release_date, :nb_fans, :genre_id, :type);')
-			self.db.execute(sql, 
+		try:
+			self.db.execute(self.tbl_album.insert().values(
 				album_id=album['id'], 
-				artist_id=album['artist']['id'], 
 				title=album['title'], 
+				artist_id=album['artist']['id'], 
 				release_date=album['release_date'], 
 				nb_fans=album['fans'], 
 				genre_id=album['genre_id'], 
-				type=album['record_type'])
+				type=album['record_type']))
+		except IntegrityError as e:
+			self.db.execute(self.tbl_album.update()
+				.where(Column('album_id') == album['id'])
+				.values(nb_fans=album['fans'], updated_at=datetime.now())) 
+		except Exception as e:
+			return e
 
 	def storeNewReleases(self, new_releases, user_id):
 		rows = []
@@ -84,6 +111,3 @@ class Database(object):
 
 	def getUserReleases(self, user_id, from_date=None):
 		pass
-
-db = Database()
-db.getUser(34466551)
