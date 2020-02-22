@@ -1,6 +1,6 @@
 import os
-from datetime import datetime
-from sqlalchemy import create_engine, text, MetaData, Table, Column
+from datetime import datetime, timedelta
+from sqlalchemy import create_engine, text, MetaData, Table, Column, join, select
 from sqlalchemy.exc import IntegrityError
 
 class Database(object):
@@ -109,5 +109,14 @@ class Database(object):
 		self.db.execute("INSERT INTO fact_releases (user_id, artist_id, album_id, created_at) VALUES" + ', '.join(rows) + ";")	
 		self.updateUserLastCheck(user_id)
 
-	def getUserReleases(self, user_id, from_date=None):
-		pass
+	def getReleases(self, user_id=None, since=None):
+		try:
+			if user_id:
+				fact = self.tbl_releases.select().where(Column('user_id') == user_id).alias('fact')
+			else:
+				fact = self.tbl_releases.select().alias('fact')
+			albums = self.tbl_album.select().where(Column('release_date') >= (datetime.now()-timedelta(int(since)))).alias('albums')
+			releases = fact.join(albums, fact.c.album_id == albums.c.album_id).select()
+			return self.db.execute(releases).fetchall()
+		except Exception as e:
+			raise e
