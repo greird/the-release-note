@@ -1,6 +1,5 @@
 create table if not exists dim_album
 (
-    id           serial                  not null,
     album_id     integer                 not null
         constraint dim_album_pk
             primary key,
@@ -16,8 +15,3 @@ create table if not exists dim_album
 
 create unique index dim_album_album_id_uindex
     on dim_album (album_id);
-
-create unique index dim_album_id_uindex
-    on dim_album (id);
-
-
