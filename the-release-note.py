@@ -99,7 +99,7 @@ for user in users:
 
 	# Send new releases by email
 	subject = "♩ Have you listened to " + new_releases[0]['artist']['name'] + "'s new album ?"
-	contenthtml = get_template(new_releases)
+	contenthtml = get_template(new_releases, user['deezer_user_id'])
 	 
 	if not args.do_not_send:
 		try:

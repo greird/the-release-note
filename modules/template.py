@@ -1,7 +1,7 @@
 import pathlib
 path = str(pathlib.Path(__file__).parents[1])
 
-def get_template(content:list):
+def get_template(content:list, user_id):
 	template_html = open(path + '/template/mail.html', 'r').read()
 	album_html = open(path + '/template/mail_release.html', 'r').read()
 
@@ -17,6 +17,7 @@ def get_template(content:list):
 		releases_html += html
 
 	template_html = template_html.replace('{{NB_RELEASES}}', nb_releases)
+	template_html = template_html.replace('{{USER_ID}}', str(user_id))
 	template_html = template_html.replace('{{RELEASES}}', releases_html)
 
 	return template_html
