@@ -31,5 +31,3 @@ parser.add_argument('-n', '--no-mail',
 	action='store_const',
 	dest='do_not_send',
 	help='Do not send any email.')
-
-args = parser.parse_args()

@@ -1,6 +1,6 @@
 import os
 from datetime import datetime, timedelta
-from sqlalchemy import create_engine, text, MetaData, Table, Column, join, select
+from sqlalchemy import create_engine, text, MetaData, Table, Column, join, select, desc
 from sqlalchemy.exc import IntegrityError
 
 class Database(object):
@@ -45,6 +45,9 @@ class Database(object):
 
 	def getUser(self, user_id):
 		return self.db.execute(self.tbl_user.select().where(Column('user_id') == user_id)).fetchone()
+
+	def getAllUsers(self):
+		return self.db.execute(self.tbl_user.select()).fetchall()
 
 	def createUser(self, user_id, first_name=None, last_name=None, email=None, frequency=None):
 		try:
@@ -109,14 +112,26 @@ class Database(object):
 		self.db.execute("INSERT INTO fact_releases (user_id, artist_id, album_id, created_at) VALUES" + ', '.join(rows) + ";")	
 		self.updateUserLastCheck(user_id)
 
-	def getReleases(self, user_id=None, since=None):
+	def getReleases(self, user_id=None, since=7):
 		try:
 			if user_id:
 				fact = self.tbl_releases.select().where(Column('user_id') == user_id).alias('fact')
 			else:
 				fact = self.tbl_releases.select().alias('fact')
 			albums = self.tbl_album.select().where(Column('release_date') >= (datetime.now()-timedelta(int(since)))).alias('albums')
-			releases = fact.join(albums, fact.c.album_id == albums.c.album_id).select()
-			return self.db.execute(releases).fetchall()
+			releases = fact.\
+				join(albums, fact.c.album_id == albums.c.album_id).\
+				join(self.tbl_artist, albums.c.artist_id == self.tbl_artist.c.artist_id)
+
+			r = self.db.execute(select([
+					fact.c.user_id,
+					self.tbl_artist.c.name,
+					albums
+				]).\
+				select_from(releases).\
+				order_by(desc(albums.c.release_date))).\
+				fetchall()
+
+			return r
 		except Exception as e:
 			raise e

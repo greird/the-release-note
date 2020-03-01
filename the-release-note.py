@@ -1,6 +1,8 @@
 import logging, datetime, sys
 from modules import *
 
+args = parser.parse_args()
+
 start_time = datetime.datetime.now()
 
 logger = logging.getLogger(__name__)

@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% block nav %}
+{{ super() }}
+{% endblock %}
+
+{% block body %}
+<div class="row mt-3">
+
+	<ul class="list-unstyled">
+		{% for r in releases %}
+		<li class="media my-3">
+			<a href="https://www.deezer.com/album/{{ r.album_id }}">
+				<img class="mr-3 ml-3 mb-3 rounded" src="https://api.deezer.com/album/{{ r.album_id }}/image?size=big">
+			</a>
+			<div class="media-body">
+				<h5 class="mt-0">
+					<a href="https://www.deezer.com/album/{{ r.album_id }}" class="text-dark">{{ r.title }}</a><br />
+					<small class="text-secondary">by 
+						<a href="https://www.deezer.com/artist/{{ r.artist_id }}" class="text-dark">{{ r.artist_name }}</a>
+					</small>
+				</h5>
+				<small>
+					<p class="my-0">
+						{{ r.nb_fans }} fan(s) •
+						Released on {{ r.release_date }}
+					</p>
+					<span class="badge badge-pill badge-secondary">{{ r.genre_id }}</span>
+					<br />
+					<a href="https://www.deezer.com/album/{{ r.album_id }}?autoplay=true" class="card-link" target="_blank">▶ Listen</a>
+				</small>
+			</div>
+		</li>
+		{% endfor %}
+	</ul>
+
+</div>
+
+{% endblock %}
