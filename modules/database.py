@@ -115,15 +115,16 @@ class Database(object):
 	def getReleases(self, user_id=None, since=7):
 		try:
 			if user_id:
-				fact = self.tbl_releases.select().where(Column('user_id') == user_id).alias('fact')
+				fact = self.tbl_releases.select().distinct(self.tbl_releases.c.album_id).where(Column('user_id') == user_id).alias('fact')
 			else:
-				fact = self.tbl_releases.select().alias('fact')
+				fact = self.tbl_releases.select().distinct(self.tbl_releases.c.album_id).alias('fact')
 			albums = self.tbl_album.select().where(Column('release_date') >= (datetime.now()-timedelta(int(since)))).alias('albums')
 			releases = fact.\
 				join(albums, fact.c.album_id == albums.c.album_id).\
 				join(self.tbl_artist, albums.c.artist_id == self.tbl_artist.c.artist_id)
 
-			r = self.db.execute(select([
+			r = self.db.execute(
+				select([
 					fact.c.user_id,
 					self.tbl_artist.c.name,
 					albums
