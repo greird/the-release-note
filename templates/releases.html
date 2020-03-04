@@ -6,32 +6,26 @@
 {% block body %}
 <div class="row mt-3">
 
-	<ul class="list-unstyled">
 		{% for r in releases %}
-		<li class="media my-3">
-			<a href="https://www.deezer.com/album/{{ r.album_id }}">
-				<img class="mr-3 ml-3 mb-3 rounded" src="https://api.deezer.com/album/{{ r.album_id }}/image?size=big">
+		<div class="card ml-3 mb-3 overflow-hidden">
+			<a href="https://www.deezer.com/album/{{ r.album_id }}" target="_blank">
+				<img class="card-img-top cover" src="https://api.deezer.com/album/{{ r.album_id }}/image?size=big">
 			</a>
-			<div class="media-body">
-				<h5 class="mt-0">
+
+			<div class="card-body">
+				<div class="card-title mb-0 text-break text-wrap">
 					<a href="https://www.deezer.com/album/{{ r.album_id }}" class="text-dark">{{ r.title }}</a><br />
+				</div>
+				<p class="card-text text-break">
 					<small class="text-secondary">by 
 						<a href="https://www.deezer.com/artist/{{ r.artist_id }}" class="text-dark">{{ r.artist_name }}</a>
+						<br />{{ r.nb_fans }} fan(s)
+						<br />Released on {{ r.release_date }}
 					</small>
-				</h5>
-				<small>
-					<p class="my-0">
-						{{ r.nb_fans }} fan(s) •
-						Released on {{ r.release_date }}
-					</p>
-					<span class="badge badge-pill badge-secondary">{{ r.genre_id }}</span>
-					<br />
-					<a href="https://www.deezer.com/album/{{ r.album_id }}?autoplay=true" class="card-link" target="_blank">▶ Listen</a>
-				</small>
+				</p>
 			</div>
-		</li>
+		</div>
 		{% endfor %}
-	</ul>
 
 </div>
 
