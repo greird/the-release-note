@@ -5,7 +5,9 @@ Every day/week at 9am, get a digest of all the new releases from your favorite a
 
 ## Requirements
 
-All you need is Python3 and a [Sendgrid API key](https://app.sendgrid.com/settings/api_keys) (a free Sendgrid account is enough).
+- Python3 
+- A [Sendgrid API key](https://app.sendgrid.com/settings/api_keys) (a free Sendgrid account is enough)
+- PostgreSQL
 
 ## Setup
 
