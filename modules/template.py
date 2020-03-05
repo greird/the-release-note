@@ -2,8 +2,8 @@ import pathlib
 path = str(pathlib.Path(__file__).parents[1])
 
 def get_template(content:list, user_id):
-	template_html = open(path + '/template/mail.html', 'r').read()
-	album_html = open(path + '/template/mail_release.html', 'r').read()
+	template_html = open(path + '/templates/mail.html', 'r').read()
+	album_html = open(path + '/templates/mail_release.html', 'r').read()
 
 	nb_releases = str(len(content))
 
