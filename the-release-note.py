@@ -30,10 +30,8 @@ weekday = datetime.datetime.today().weekday()
 
 # Retrieve users, either from args of a contact list
 if args.user:
-	users = []
-	for user in args.user:
-		user = { 'deezer_user_id': int(user[0]), 'email': user[1] }
-		users.append(user)
+	args.do_not_send = True if not args.email else False
+	users = [{ 'deezer_user_id': int(user), 'email': args.email } for user in args.user]
 else:
 	try:
 		users = getContacts(args.contact_list_id) if args.contact_list_id else getContacts(CONFIG['contact_list_id'])
