@@ -5,15 +5,19 @@ Every day/week at 9am, get a digest of all the new releases from your favorite a
 
 ## Requirements
 
-All you need is Python3 and a [Sendgrid API key](https://app.sendgrid.com/settings/api_keys) (a free Sendgrid account is enough).
+- Python3 
+- A [Sendgrid API key](https://app.sendgrid.com/settings/api_keys) (a free Sendgrid account is enough)
+- PostgreSQL
 
 ## Setup
 
 1. Clone, fork or download this repository.
 2. Install all dependencies `pip3 install -r requirements.txt`.
-3. Create a sendgrid.env file with the line `export SENDGRID_API_KEY='YOUR_API_KEY'` and replace `YOUR_API_KEY` with your own key. Load it with `source ./sendgrid.env`.
-4. Edit the configuratin accordingly in `modules/__init__.py`.
-5. Launch the script (see Usage below).
+3. Create a credentials.env file with the lines `export SENDGRID_API_KEY='YOUR_API_KEY'` and replace `YOUR_API_KEY` with your own key. Load it with `source ./credentials.env`.
+4. Add `export DATABASE='postgresql://login:password@host/database'`, replacing login, password, host and database
+5. Run `psql postgresql://login:password@host/database -f sql/create.sql` to create all necessary tables
+6. Edit the configuratin accordingly in `modules/__init__.py`.
+7. Launch the script (see Usage below).
 
 ## Usage
 
@@ -22,6 +26,7 @@ The Release Note can be used to send newsletters to all recipient from a Sendgri
 ```pycon
 usage: the-release-note.py [-h] [-d] [-u DEEZER_ID EMAIL]
                            [-c SENDGRID_CONTACT_LIST_ID] [-s NUMBER_OF_DAYS]
+                           [-n]
 
 Sending new releases to a contact list or a given user.
 
@@ -36,6 +41,7 @@ optional arguments:
   -s NUMBER_OF_DAYS, --since NUMBER_OF_DAYS
                         Keep only the albums released since a given number of
                         days.
+  -n, --no-mail         Do not send any email.
 ```
 
 ### Sending a New Releases digest to one user
@@ -63,7 +69,7 @@ Set up a cron to run the script regularly.
 
 e.g. To send the newsletter every day at 8am (change path accordingly):
 ```
-0 8 * * * source <yourpath>/sendgrid.env ; <yourpath>/python3 <yourpath>/the-release-note.py >> <yourpath>/cron.log 2>&1
+0 8 * * * source <yourpath>/credentials.env ; <yourpath>/python3 <yourpath>/the-release-note.py >> <yourpath>/cron.log 2>&1
 ```
 Note that for users with "weekly" preferences, it will only send the email on Friday, containing new releases from the past 7 days.
 

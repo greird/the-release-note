@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+{% block nav %}
+{{ super() }}
+{% endblock %}
+
+{% block body %}
+<div class="row mt-3">
+
+		{% for r in releases %}
+		<div class="card ml-3 mb-3 overflow-hidden">
+			<a href="https://www.deezer.com/album/{{ r.album_id }}" target="_blank">
+				<img class="card-img-top cover" src="https://api.deezer.com/album/{{ r.album_id }}/image?size=big">
+			</a>
+
+			<div class="card-body">
+				<div class="card-title mb-0 text-break text-wrap">
+					<a href="https://www.deezer.com/album/{{ r.album_id }}" class="text-dark">{{ r.title }}</a><br />
+				</div>
+				<p class="card-text text-break">
+					<small class="text-secondary">by 
+						<a href="https://www.deezer.com/artist/{{ r.artist_id }}" class="text-dark">{{ r.artist_name }}</a>
+						<br />Released on {{ r.release_date }}
+					</small>
+				</p>
+			</div>
+		</div>
+		{% endfor %}
+
+</div>
+
+{% endblock %}

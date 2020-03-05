@@ -8,11 +8,16 @@ parser.add_argument('-d', '--debug',
 	help='Enable debug mode.')
 
 parser.add_argument('-u', '--user', 
-	nargs=2, 
-	metavar=('DEEZER_ID', 'EMAIL'),
+	nargs='+', 
+	metavar='DEEZER_ID',
 	dest='user',
-	action='append',
-	help='Send all new releases from DEEZER_ID to EMAIL.')
+	help='Retrieve new releases for DEEZER_ID. Can be multiple DEEZER_ID.')
+
+parser.add_argument('-m', '--mail', 
+	type=str,
+	metavar='EMAIL',
+	dest='email',
+	help='Send all new releases found to EMAIL.')
 
 parser.add_argument('-c', '--contact-list', 
 	type=str,
@@ -26,4 +31,8 @@ parser.add_argument('-s', '--since',
 	dest='released_since',
 	help='Keep only the albums released since a given number of days.')
 
-args = parser.parse_args()
+parser.add_argument('-n', '--no-mail',
+	const=True,
+	action='store_const',
+	dest='do_not_send',
+	help='Do not send any email.')

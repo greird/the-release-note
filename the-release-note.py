@@ -1,6 +1,8 @@
 import logging, datetime, sys
 from modules import *
 
+args = parser.parse_args()
+
 start_time = datetime.datetime.now()
 
 logger = logging.getLogger(__name__)
@@ -28,10 +30,8 @@ weekday = datetime.datetime.today().weekday()
 
 # Retrieve users, either from args of a contact list
 if args.user:
-	users = []
-	for user in args.user:
-		user = { 'deezer_user_id': int(user[0]), 'email': user[1] }
-		users.append(user)
+	args.do_not_send = True if not args.email else False
+	users = [{ 'deezer_user_id': int(user), 'email': args.email } for user in args.user]
 else:
 	try:
 		users = getContacts(args.contact_list_id) if args.contact_list_id else getContacts(CONFIG['contact_list_id'])
@@ -86,17 +86,28 @@ for user in users:
 	if nb_releases < 1:
 		continue
 
-	subject = "♩ Have you listened to " + new_releases[0]['artist'] + "'s new album ?"
-	contenthtml = get_template(new_releases)
-	 
+	# Store new releases into database
 	try:
-		send = sendMail(CONFIG['from_mail'], CONFIG['from_name'], user['email'], subject, contenthtml)
-		logger.info("Sending email - Status: " + str(send.status_code))
-		logger.debug(send.headers)
+		db = Database()
+		db.storeNewReleases(new_releases, user['deezer_user_id'])
+		del(db)
 	except Exception as e:
-		logger.info("An error occured while trying to send the mail.")
-		logger.debug(e)
-		sys.exit(2)
+		logger.info("An error occured while trying to store the new releases in the database.")
+		logger.debug(e)	
+
+	# Send new releases by email
+	subject = "♩ Have you listened to " + new_releases[0]['artist']['name'] + "'s new album ?"
+	contenthtml = get_template(new_releases, user['deezer_user_id'])
+	 
+	if not args.do_not_send:
+		try:
+			send = sendMail(CONFIG['from_mail'], CONFIG['from_name'], user['email'], subject, contenthtml)
+			logger.info("Sending email - Status: " + str(send.status_code))
+			logger.debug(send.headers)
+		except Exception as e:
+			logger.info("An error occured while trying to send the mail.")
+			logger.debug(e)
+			sys.exit(2)
 
 print('Done')
-logger.info("Done without errors in %s seconds " % (datetime.datetime.now() - start_time).total_seconds())
+logger.info("Done in %s seconds " % (datetime.datetime.now() - start_time).total_seconds())

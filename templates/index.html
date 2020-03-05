@@ -1,0 +1,45 @@
+<!doctype html>
+<!DOCTYPE html>
+<html>
+<title></title>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+	<div class="container-fluid">
+		{% if request.args.get('error', None) %}
+		<div class="alert alert-danger" role="alert">
+			<b>Something went wrong.</b><br /> {{ request.args.get('error', None) }}
+		</div>
+
+		{% else %}
+			<hr class="mt-0 mb-4">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<a href="{{ url_for('index') }}">Index</a>
+					{% for page in request.path.split('/') %}
+					<li class="breadcrumb-item active text-truncate" aria-current="page">{{ page }}</li>
+					{% endfor %}
+				</ol>
+			</nav>
+			{% block body %}
+			<div class="w-100">
+				<div class="list-group list-group-flush">
+					{% for user in users %}
+					<a href="{{ url_for('user', user_id=user.id) }}" class="list-group-item list-group-item-action flex-column align-items-start">
+						<div class="d-flex w-100">
+							<h5 class="mb-0">{{ user.id }}</h5>
+						</div>
+						<small>Last checked at {{ user.last_checked }}</small>
+					</a>
+					{% endfor %}
+				</div>
+			</div>
+			{% endblock %}
+		{% endif %}
+	</div>
+
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="/js/main.js"></script>
+</body>
+</html>

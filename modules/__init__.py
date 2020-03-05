@@ -1,4 +1,5 @@
 from .deezer import Deezer
+from .database import Database
 from .template import *
 from .mail import *
 from .options import *
