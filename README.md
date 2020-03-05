@@ -24,7 +24,7 @@ Every day/week at 9am, get a digest of all the new releases from your favorite a
 The Release Note can be used to send newsletters to all recipient from a Sendgrid contact list OR directly to one recipient defined through the terminal.
 
 ```pycon
-usage: the-release-note.py [-h] [-d] [-u DEEZER_ID EMAIL]
+usage: the-release-note.py [-h] [-d] [-u DEEZER_ID [DEEZER_ID ...]] [-m EMAIL]
                            [-c SENDGRID_CONTACT_LIST_ID] [-s NUMBER_OF_DAYS]
                            [-n]
 
@@ -33,8 +33,11 @@ Sending new releases to a contact list or a given user.
 optional arguments:
   -h, --help            show this help message and exit
   -d, --debug           Enable debug mode.
-  -u DEEZER_ID EMAIL, --user DEEZER_ID EMAIL
-                        Send all new releases from DEEZER_ID to EMAIL.
+  -u DEEZER_ID [DEEZER_ID ...], --user DEEZER_ID [DEEZER_ID ...]
+                        Retrieve new releases for DEEZER_ID. Can be multiple
+                        DEEZER_ID.
+  -m EMAIL, --mail EMAIL
+                        Send all new releases found to EMAIL.
   -c SENDGRID_CONTACT_LIST_ID, --contact-list SENDGRID_CONTACT_LIST_ID
                         Send a personalized new releases digest to all
                         recipients of a Sendgrid contact list.
