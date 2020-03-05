@@ -49,7 +49,7 @@ optional arguments:
 
 ### Sending a New Releases digest to one user
 
-`python3 the-release-note.py -u 5 mail@mail.com -s 7`
+`python3 the-release-note.py -u 5 -m mail@mail.com -s 7`
 
 This will send all albums from user ID 5's favourite artists, released in the past 7 days, to mail@mail.com.
 
