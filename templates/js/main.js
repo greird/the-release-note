@@ -2,7 +2,7 @@ window.addEventListener('resize', setCanvaSize);
 
 function setCanvaSize() {
 
-    var itemSize = 300;     // item default size
+    var itemSize = 400;     // item default size
     var browser = {};       // browser info
     var itemNumber = {};    // number of items that can fit in the window size
 
@@ -19,7 +19,7 @@ function setCanvaSize() {
     };
 
     // Re-set the item size to fit the page width
-    itemSize = browser.width / itemNumber.width;
+    itemSize = ((browser.width / itemNumber.width) - 25);
 
     // Set thumbnail and cover (img) size
     $(".cover").css( "width", itemSize).css( "height", itemSize);
